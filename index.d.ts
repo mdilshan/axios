@@ -347,8 +347,21 @@ export interface AxiosInterceptorManager<V> {
   eject(id: number): void;
 }
 
+export interface AxiosInterceptorConfig {
+  request?: {
+    onFulfilled?: (value: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>,
+    onRejected?: (error: any) => any, 
+    options?: AxiosInterceptorOptions
+  },
+  response?: {
+    onFulfilled?: (value: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>,
+    onRejected?: (error: any) => any, 
+    options?: AxiosInterceptorOptions
+  },
+}
+
 export class Axios {
-  constructor(config?: AxiosRequestConfig);
+  constructor(config?: AxiosRequestConfig, interceptors?: AxiosInterceptorConfig);
   defaults: AxiosDefaults;
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>;
@@ -390,7 +403,7 @@ export interface GenericHTMLFormElement {
 }
 
 export interface AxiosStatic extends AxiosInstance {
-  create(config?: CreateAxiosDefaults): AxiosInstance;
+  create(config?: CreateAxiosDefaults, interceptors?: AxiosInterceptorConfig): AxiosInstance;
   Cancel: CancelStatic;
   CancelToken: CancelTokenStatic;
   Axios: typeof Axios;
